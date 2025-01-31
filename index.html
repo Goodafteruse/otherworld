@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OtherWorld</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #2c3e50, #4ca1af);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            color: #ecf0f1;
+            transition: background 0.5s ease;
+        }
+        #video-container {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            width: 80%;
+            margin-bottom: 20px;
+        }
+        video {
+            width: 100%;
+            max-height: 45vh;
+            margin-bottom: 10px;
+            border: 2px solid #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        video:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
+        }
+        button {
+            background-color: #3498db;
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 12px;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+        button:hover {
+            background-color: #2980b9;
+            transform: scale(1.05);
+        }
+        .form-container {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            background: #34495e;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            transition: background 0.3s ease, box-shadow 0.3s ease;
+        }
+        .form-container.active {
+            display: flex;
+        }
+        .form-container input {
+            margin: 10px 0;
+            padding: 10px;
+            width: 100%;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background: #2c3e50;
+            color: #ecf0f1;
+        }
+        .form-container button {
+            width: 100%;
+        }
+        .form-container h2, .form-container p {
+            color: #ecf0f1;
+        }
+        .form-container a {
+            color: #3498db;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        .form-container a:hover {
+            color: #2980b9;
+        }
+    </style>
+</head>
+<body>
+    <div id="form-container" class="form-container active">
+        <h2>Login</h2>
+        <input type="text" id="username" placeholder="Username">
+        <input type="password" id="password" placeholder="Password">
+        <button id="loginButton">Login</button>
+        <p>Don't have an account? <a href="#" id="showRegister">Register</a></p>
+    </div>
+    <div id="register-container" class="form-container">
+        <h2>Register</h2>
+        <input type="text" id="newUsername" placeholder="Username">
+        <input type="password" id="newPassword" placeholder="Password">
+        <button id="registerButton">Register</button>
+        <p>Already have an account? <a href="#" id="showLogin">Login</a></p>
+    </div>
+    <div id="video-container">
+        <video id="localVideo" autoplay muted></video>
+        <video id="remoteVideo" autoplay></video>
+    </div>
+    <button id="startButton" style="display: none;">Start</button>
+    <button id="stopButton" style="display: none;">Stop</button>
+    <script src="script.js"></script>
+    <script>
+        document.getElementById('loginButton').addEventListener('click', function() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const storedUsername = localStorage.getItem('username');
+            const storedPassword = localStorage.getItem('password');
+
+            if (username === storedUsername && password === storedPassword) {
+                document.getElementById('form-container').classList.remove('active');
+                document.getElementById('video-container').style.display = 'flex';
+                document.getElementById('startButton').style.display = 'inline-block';
+                document.getElementById('stopButton').style.display = 'inline-block';
+                startRandomVideoCall();
+            } else {
+                alert('Invalid username or password');
+            }
+        });
+
+        function startRandomVideoCall() {
+            // Simulate random user video call
+            const localVideo = document.getElementById('localVideo');
+            const remoteVideo = document.getElementById('remoteVideo');
+
+            // Placeholder for actual video call logic
+            localVideo.src = 'path/to/local/video.mp4';
+            remoteVideo.src = 'path/to/remote/video.mp4';
+        }
+
+        document.getElementById('registerButton').addEventListener('click', function() {
+            const newUsername = document.getElementById('newUsername').value;
+            const newPassword = document.getElementById('newPassword').value;
+
+            if (newUsername && newPassword) {
+                localStorage.setItem('username', newUsername);
+                localStorage.setItem('password', newPassword);
+                alert('Registration successful! Please login.');
+                document.getElementById('register-container').classList.remove('active');
+                document.getElementById('form-container').classList.add('active');
+            } else {
+                alert('Please fill in both fields');
+            }
+        });
+
+        document.getElementById('showRegister').addEventListener('click', function(event) {
+            event.preventDefault();
+            document.getElementById('form-container').classList.remove('active');
+            document.getElementById('register-container').classList.add('active');
+        });
+
+        document.getElementById('showLogin').addEventListener('click', function(event) {
+            event.preventDefault();
+            document.getElementById('register-container').classList.remove('active');
+            document.getElementById('form-container').classList.add('active');
+        });
+    </script>
+</body>
+</html>
